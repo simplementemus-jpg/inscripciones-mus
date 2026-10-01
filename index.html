@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscripción - Simplemente Mus</title>
+  <style>
+    /* Estilo oscuro y elegante (Premium) */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      /* Aquí puedes poner la ruta a una de tus imágenes 4K de Copilot */
+      background-image: url('fondo-tapete.jpg'); 
+      background-size: cover;
+      background-position: center;
+      background-color: rgba(15, 15, 15, 0.85); /* Oscurece la imagen de fondo */
+      background-blend-mode: overlay;
+      color: #fff;
+    }
+    .formulario-contenedor {
+      background: rgba(30, 30, 30, 0.95);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid #d4af37; /* Borde dorado elegante */
+      max-width: 500px;
+      width: 100%;
+    }
+    h2 {
+      text-align: center;
+      color: #d4af37; /* Dorado */
+      margin-bottom: 5px;
+      font-size: 1.5em;
+    }
+    .logo-texto {
+      text-align: center;
+      font-style: italic;
+      color: #ccc;
+      margin-bottom: 30px;
+      font-size: 1.1em;
+    }
+    .grupo {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #444;
+      border-radius: 6px;
+      background: #222;
+      color: #fff;
+      box-sizing: border-box;
+      font-size: 1em;
+    }
+    input:focus, select:focus {
+      border-color: #d4af37;
+      outline: none;
+      box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      background: #d4af37;
+      color: #111;
+      border: none;
+      border-radius: 6px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #b5952f;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="formulario-contenedor">
+    <h2>Campeonato de Mus Especial Navidad MSE</h2>
+    <div class="logo-texto">Simplemente Mus</div>
+    
+    <form id="formInscripcion">
+      <!-- El nombre del campeonato lo enviamos oculto para no pedirlo -->
+      <input type="hidden" id="campeonato" value="Especial Navidad MSE">
+
+      <div class="grupo">
+        <label>Nombre Jugador 1 *</label>
+        <input type="text" id="jugador1" required placeholder="Ej: Carlos Pérez">
+      </div>
+      <div class="grupo">
+        <label>Teléfono Jugador 1 *</label>
+        <input type="tel" id="telefono1" required>
+      </div>
+
+      <div class="grupo">
+        <label>Nombre Jugador 2</label>
+        <input type="text" id="jugador2">
+      </div>
+      <div class="grupo">
+        <label>Teléfono Jugador 2</label>
+        <input type="tel" id="telefono2">
+      </div>
+
+      <div class="grupo">
+        <label>¿Necesita Habitación de Hotel? *</label>
+        <select id="hotel" required>
+          <option value="">Selecciona una opción</option>
+          <option value="SI">Sí</option>
+          <option value="NO">No</option>
+        </select>
+      </div>
+
+      <div class="grupo">
+        <label>Número de Habitaciones</label>
+        <select id="habitaciones">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+
+      <button type="submit" id="btnEnviar">Confirmar Inscripción</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('formInscripcion').addEventListener('submit', function(e) {
+      e.preventDefault(); // Evita que la página se recargue
+      
+      const btn = document.getElementById('btnEnviar');
+      btn.innerText = "Procesando inscripción...";
+      btn.disabled = true;
+
+      // Recogemos los datos del formulario
+      const datosPareja = {
+        campeonato: document.getElementById('campeonato').value,
+        jugador1: document.getElementById('jugador1').value,
+        telefono1: document.getElementById('telefono1').value,
+        jugador2: document.getElementById('jugador2').value,
+        telefono2: document.getElementById('telefono2').value,
+        hotel: document.getElementById('hotel').value,
+        habitaciones: document.getElementById('habitaciones').value
+      };
+
+      // PEGA AQUÍ LA URL DE TU SCRIPT DE GOOGLE
+      const urlScript = "https://script.google.com/macros/s/AKfycbymZePzqijlPZdFGszoP_DbfT3v9TEA2SHDIb7rb4oQzoV_gaYuOLrduQmH4KBpRwlA/exec";
+
+      fetch(urlScript, {
+        method: 'POST',
+        body: JSON.stringify(datosPareja)
+      })
+      .then(respuesta => respuesta.text())
+      .then(texto => {
+        alert("¡Inscripción completada con éxito! Nos vemos en el tapete.");
+        document.getElementById('formInscripcion').reset();
+        btn.innerText = "Confirmar Inscripción";
+        btn.disabled = false;
+      })
+      .catch(error => {
+        alert("Hubo un error de conexión. Inténtalo de nuevo.");
+        btn.innerText = "Confirmar Inscripción";
+        btn.disabled = false;
+      });
+    });
+  </script>
+</body>
+</html>
